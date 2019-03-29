@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CLAD.Models;
 
 namespace CLAD.Data
 {
@@ -12,5 +13,6 @@ namespace CLAD.Data
             : base(options)
         {
         }
+        public DbSet<CLAD.Models.User> User { get; set; }
     }
 }
