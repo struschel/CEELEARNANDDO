@@ -4,12 +4,12 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Article</h4>
+
+<h4>Edit Article</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -20,20 +20,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <input asp-for="Content" id="mytextarea" class="form-control textareahg" />
                 <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Comments" class="control-label"></label>
-                <input asp-for="Comments" class="form-control" />
-                <span asp-validation-for="Comments" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
                 </label>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden="hidden">
                 <label asp-for="PublicationDate" class="control-label"></label>
                 <input asp-for="PublicationDate" class="form-control" />
                 <span asp-validation-for="PublicationDate" class="text-danger"></span>
