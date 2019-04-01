@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CLAD.Models;
 
 namespace CLAD
 {
@@ -43,6 +44,9 @@ namespace CLAD
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<CLADContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CLADContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
