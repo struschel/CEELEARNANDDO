@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CLAD.Models;
+using CLAD.Data;
 
-namespace ContactForm.Controllers
+namespace CLAD.Controllers
 {
     public class MailsController : Controller
     {
-        private readonly CLADContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public MailsController(CLADContext context)
+        public MailsController(ApplicationDbContext context)
         {
             _context = context;
         }
