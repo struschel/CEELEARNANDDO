@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using CLAD.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CLAD.Controllers
 {
@@ -14,15 +15,19 @@ namespace CLAD.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public UsersController(ApplicationDbContext context)
+        private UserManager<IdentityUser> _userManager;
+        
+        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+           
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.User.ToListAsync());
+            return View(_context.User.ToListAsync());
         }
 
         // GET: Users/Details/5
