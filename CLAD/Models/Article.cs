@@ -16,6 +16,5 @@ namespace CLAD.Models
         public bool IsVisible { get; set; }
         public DateTime PublicationDate { get; set; }
         public List<ArticleTag> Tags { get; set; }
-
     }
 }

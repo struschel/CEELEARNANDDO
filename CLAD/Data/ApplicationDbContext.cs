@@ -13,6 +13,7 @@ namespace CLAD.Data
             : base(options)
         {
         }
+        public DbSet<CLAD.Models.Article> Articles { get; set; }
         public DbSet<CLAD.Models.User> User { get; set; }
     }
 }
