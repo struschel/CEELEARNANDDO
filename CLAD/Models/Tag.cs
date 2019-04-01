@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace CLAD.Models
 {
-    public class User
+    public class Tag
     {
+        public List<ArticleTag> Articles { get; set; }
         public int Id { get; set; }
-        public IdentityUser Gebruiker { get; set; }
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
     }
 }
