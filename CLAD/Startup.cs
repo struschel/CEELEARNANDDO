@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CLAD.Models;
+
 
 namespace CLAD
 {
@@ -38,7 +40,7 @@ namespace CLAD
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -46,7 +48,7 @@ namespace CLAD
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +67,8 @@ namespace CLAD
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            UserSeed.SeedData(userManager, roleManager);
 
             app.UseMvc(routes =>
             {
