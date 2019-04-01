@@ -15,6 +15,7 @@ namespace CLAD.Models
         private readonly ApplicationDbContext _context;
         UserManager<IdentityUser> _userManager;
         RoleManager<IdentityRole> _roleManager;
+        
 
 
         public UsersController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -22,6 +23,7 @@ namespace CLAD.Models
             
             _userManager = userManager;
             _roleManager = roleManager;
+          
         }
 
         // GET: Users
@@ -31,15 +33,14 @@ namespace CLAD.Models
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+            IdentityUser user = await _userManager.FindByIdAsync(Id);
             if (user == null)
             {
                 return NotFound();
@@ -47,6 +48,8 @@ namespace CLAD.Models
 
             return View(user);
         }
+
+
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
