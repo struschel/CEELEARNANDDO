@@ -4,30 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h4>Artikelen</h4>
+<h1>Artikelen</h1>
 
-<ul>
-    @foreach (var item in Model) {
-    <li>
-        <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
-        <p>@Html.Raw(item.Content.TruncateHtml(20,"..."))</p>
-        <a asp-action="Details" asp-route-id="@item.Id">Verder Lezen</a>
-
-
-    </li>
-    }
-</ul>
-
-
-
-
-
+<p>
+    <a asp-area="Admin" asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -45,11 +29,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-    
+
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -63,9 +44,10 @@
                 @Html.DisplayFor(modelItem => item.PublicationDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                <a asp-area="Admin" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-area="Admin" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-area="Admin" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
