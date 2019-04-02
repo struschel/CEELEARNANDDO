@@ -15,7 +15,7 @@ namespace CLAD.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -55,6 +55,49 @@ namespace CLAD.Data.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("ArticleTag");
+                });
+
+            modelBuilder.Entity("CLAD.Models.Mail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Bericht")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("Naam")
+                        .IsRequired();
+
+                    b.Property<string>("Onderwerp")
+                        .IsRequired();
+
+                    b.Property<string>("TelefoonNr")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mail");
+                });
+
+            modelBuilder.Entity("CLAD.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("GebruikerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GebruikerId");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -228,6 +271,13 @@ namespace CLAD.Data.Migrations
                         .WithMany("Tags")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CLAD.Models.User", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Gebruiker")
+                        .WithMany()
+                        .HasForeignKey("GebruikerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

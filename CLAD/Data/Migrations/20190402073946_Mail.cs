@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CLAD.Migrations
+namespace CLAD.Data.Migrations
 {
     public partial class Mail : Migration
     {
@@ -23,12 +23,40 @@ namespace CLAD.Migrations
                 {
                     table.PrimaryKey("PK_Mail", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GebruikerId = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_AspNetUsers_GebruikerId",
+                        column: x => x.GebruikerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_GebruikerId",
+                table: "User",
+                column: "GebruikerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Mail");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }
