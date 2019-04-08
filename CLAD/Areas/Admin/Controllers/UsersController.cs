@@ -14,7 +14,7 @@ namespace CLAD.Models
 
     [Area("Admin")]
 
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class UsersController : Controller
     {
