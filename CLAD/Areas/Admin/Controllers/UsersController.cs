@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CLAD.Models
 {
+
+    [Area("Admin")]
+
+    [Authorize(Roles ="Admin")]
+
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
