@@ -11,7 +11,7 @@ namespace CLAD.Models
     {
         public int Id { get; set; }
 
-        public User Author { get; set; }
+        public string Author { get; set; }
 
         public string ThumbnailPath { get; set; }
 

@@ -63,6 +63,7 @@ namespace CLAD.Models
         {
             if (ModelState.IsValid)
             {
+                article.Author = User.Identity.Name;
                 article.PublicationDate = DateTime.Now;
                 _context.Add(article);
                 await _context.SaveChangesAsync();
