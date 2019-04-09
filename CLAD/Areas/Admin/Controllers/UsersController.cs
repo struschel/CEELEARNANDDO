@@ -47,6 +47,15 @@ namespace CLAD.Models
             }
 
             IdentityUser user = await _userManager.FindByIdAsync(Id);
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                ViewData["Role"] = role;
+            }
+
+
             if (user == null)
             {
                 return NotFound();
@@ -58,15 +67,14 @@ namespace CLAD.Models
 
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+            IdentityUser user = await _userManager.FindByIdAsync(Id);
             if (user == null)
             {
                 return NotFound();
@@ -78,11 +86,10 @@ namespace CLAD.Models
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string Id)
         {
-            var user = await _context.User.FindAsync(id);
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            var user = await _userManager.FindByIdAsync(Id);
+            await _userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }
 

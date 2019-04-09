@@ -54,8 +54,8 @@ namespace CLAD.Data
             {
                 IdentityUser user = new IdentityUser
                 {
-                    UserName = "user3@@test.nl",
-                    Email = "user3@@test.nl",
+                    UserName = "user3@test.nl",
+                    Email = "user3@test.nl",
                 };
                 IdentityResult result = userManager.CreateAsync(user, "Test1234!").Result;
                 if (result.Succeeded)
