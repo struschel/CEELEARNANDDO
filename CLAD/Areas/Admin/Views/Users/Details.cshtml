@@ -1,4 +1,4 @@
-﻿@model CLAD.Models.User
+﻿@model IdentityUser
 
 @{
     ViewData["Title"] = "Details";
@@ -10,15 +10,27 @@
     <h4>User</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DisplayName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DisplayName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            Rollen:
+        </dt>
+        <dd class="col-sm-10">
+            @ViewData["Role"]
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-area="Admin" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-area="Admin" asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>
