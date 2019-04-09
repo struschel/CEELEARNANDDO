@@ -19,6 +19,9 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <script src="~/lib/ckeditor/ckeditor.js "></script>
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -55,7 +58,7 @@
                                     <img src="~/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                     <p>
                                         @User.Identity.Name
-                                        
+
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -136,5 +139,7 @@
     <script src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/dist/js/adminlte.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
