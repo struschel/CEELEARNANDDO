@@ -11,6 +11,7 @@ namespace CLAD.Models
     {
         public int Id { get; set; }
         public User Author { get; set; }
+        public string ThumbnailPath { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public List<ArticleComment> Comments { get; set; }
