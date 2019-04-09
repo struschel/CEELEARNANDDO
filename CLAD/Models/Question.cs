@@ -10,7 +10,7 @@ namespace CLAD.Models
     {
         public int Id { get; set; }
         public List<Answer> Answers { get; set; }
-        IdentityUser Author { get; set; }
+        public User Author { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public bool IsVisible { get; set; }
