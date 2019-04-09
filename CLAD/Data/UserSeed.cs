@@ -18,15 +18,15 @@ namespace CLAD.Data
         public static void SeedUsers(UserManager<IdentityUser> userManager)
         {
 
-            if (userManager.FindByNameAsync("user1@test.nl").Result == null)
+            if (userManager.FindByNameAsync("YEEET").Result == null)
             {
 
                 IdentityUser user = new IdentityUser
                 {
-                    UserName = "user1@test.nl",
+                    UserName = "YEEET",
                     Email = "user1@test.nl"
                 };
-                IdentityResult result = userManager.CreateAsync(user, "Test1234!").Result;
+                IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(user, "Admin").Wait();
