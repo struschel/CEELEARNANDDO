@@ -29,6 +29,7 @@ namespace CLAD.Models
             
             _userManager = userManager;
             _roleManager = roleManager;
+
           
         }
 
