@@ -11,8 +11,5 @@ namespace CLAD.Models
         [Display(Name = "Omschrijving")]
         public string Description { get; set; }
 
-        [Display(Name = "Naam")]
-        public string DisplayName { get; set; }
-
     }
 }

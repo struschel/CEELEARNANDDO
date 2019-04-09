@@ -19,15 +19,15 @@ namespace CLAD.Data
         public static void SeedUsers(UserManager<User> userManager)
         {
 
-            if (userManager.FindByNameAsync("user1@test.nl").Result == null)
+            if (userManager.FindByNameAsync("YEEET").Result == null)
             {
 
                 User user = new User
                 {
-                    UserName = "user1@test.nl",
+                    UserName = "YEEET",
                     Email = "user1@test.nl"
                 };
-                IdentityResult result = userManager.CreateAsync(user, "Test1234!").Result;
+                IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(user, "Admin").Wait();
@@ -35,47 +35,47 @@ namespace CLAD.Data
 
             }
 
-            if (userManager.FindByNameAsync("user2@test.nl").Result == null)
+            if (userManager.FindByNameAsync("Sjaak").Result == null)
             {
                 User user = new User
                 {
-                    UserName = "user2@test.nl",
+                    UserName = "Sjaak",
                     Email = "user2@test.nl",
                 };
-                IdentityResult result = userManager.CreateAsync(user, "Test1234!").Result;
+                IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "StandardUser").Wait();
+                    userManager.AddToRoleAsync(user, "Consultant").Wait();
                 }
 
 
             }
 
-            if (userManager.FindByNameAsync("user3").Result == null)
+            if (userManager.FindByNameAsync("Henk").Result == null)
             {
                 User user = new User
                 {
-                    UserName = "user3@test.nl",
+                    UserName = "Henk",
                     Email = "user3@test.nl",
                 };
-                IdentityResult result = userManager.CreateAsync(user, "Test1234!").Result;
+                IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "StandardUser").Wait();
+                    userManager.AddToRoleAsync(user, "Consultant").Wait();
                 }
             }
 
-            if (userManager.FindByNameAsync("user4").Result == null)
+            if (userManager.FindByNameAsync("Piet").Result == null)
             {
                 User user = new User
                 {
-                    UserName = "user4@test.nl",
+                    UserName = "Piet",
                     Email = "user4@test.nl",
                 };
-                IdentityResult result = userManager.CreateAsync(user, "Test1234!").Result;
+                IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "StandardUser").Wait();
+                    userManager.AddToRoleAsync(user, "Consultant").Wait();
                 }
             }
         }
