@@ -9,14 +9,7 @@ a.navbar-brand {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+
 
 .border-top {
   border-top: 1px solid #e5e5e5;
@@ -58,3 +51,33 @@ body {
 .textareahg {
     min-height: 16rem;
 }
+
+.overlay-wrapper {
+    position: relative;
+}
+
+.overlay-reaction {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    background: rgba(39, 42, 43, 0.8);
+    transition: opacity 200ms ease-in-out;
+    border-radius: 4px;
+}
+
+    .overlay-reaction .btn {
+        margin: 5px;
+        
+    }
+
+    .overlay-reaction:hover {
+        opacity: 1;
+    }

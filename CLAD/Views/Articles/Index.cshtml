@@ -48,7 +48,7 @@
     
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Author)
+                @item.Author.GetDisplayName()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)

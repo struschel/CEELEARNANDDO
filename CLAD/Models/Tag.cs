@@ -7,7 +7,8 @@ namespace CLAD.Models
 {
     public class Tag
     {
-        public List<ArticleTag> Articles { get; set; }
+        public virtual IList<ArticleTag> Articles { get; set; }
+
         public int Id { get; set; }
         public string Name { get; set; }
     }

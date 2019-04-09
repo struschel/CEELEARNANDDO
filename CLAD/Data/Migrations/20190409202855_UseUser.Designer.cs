@@ -4,14 +4,16 @@ using CLAD.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CLAD.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190409202855_UseUser")]
+    partial class UseUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +27,7 @@ namespace CLAD.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorId");
+                    b.Property<string>("Author");
 
                     b.Property<string>("Content")
                         .IsRequired();
@@ -40,8 +42,6 @@ namespace CLAD.Data.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.ToTable("Articles");
                 });
@@ -144,8 +144,6 @@ namespace CLAD.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("ProfileImageUrl");
 
                     b.Property<string>("SecurityStamp");
 
@@ -279,13 +277,6 @@ namespace CLAD.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("CLAD.Models.Article", b =>
-                {
-                    b.HasOne("CLAD.Models.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
                 });
 
             modelBuilder.Entity("CLAD.Models.ArticleComment", b =>

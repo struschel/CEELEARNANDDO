@@ -19,12 +19,12 @@ namespace CLAD.Models
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
-        UserManager<IdentityUser> _userManager;
+        UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
         
 
 
-        public UsersController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             
             _userManager = userManager;
@@ -47,7 +47,7 @@ namespace CLAD.Models
                 return NotFound();
             }
 
-            IdentityUser user = await _userManager.FindByIdAsync(Id);
+            User user = await _userManager.FindByIdAsync(Id);
 
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -75,7 +75,7 @@ namespace CLAD.Models
                 return NotFound();
             }
 
-            IdentityUser user = await _userManager.FindByIdAsync(Id);
+            User user = await _userManager.FindByIdAsync(Id);
             if (user == null)
             {
                 return NotFound();
@@ -94,7 +94,7 @@ namespace CLAD.Models
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
             return _context.User.Any(e => e.Id == id);
         }

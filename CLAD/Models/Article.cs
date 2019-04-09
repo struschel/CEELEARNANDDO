@@ -11,7 +11,8 @@ namespace CLAD.Models
     {
         public int Id { get; set; }
 
-        public string Author { get; set; }
+        public string AuthorId { get; set; }
+        public virtual User Author { get; set; }
 
         public string ThumbnailPath { get; set; }
 
@@ -24,7 +25,7 @@ namespace CLAD.Models
         public string Content { get; set; }
 
         [Display(Name = "Reacties")]
-        public List<ArticleComment> Comments { get; set; }
+        public virtual IList<ArticleComment> Comments { get; set; }
 
         [Display(Name = "Zichtbaar")]
         public bool IsVisible { get; set; }
@@ -33,6 +34,6 @@ namespace CLAD.Models
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public DateTime PublicationDate { get; set; }
 
-        public List<ArticleTag> Tags { get; set; }
+        public virtual IList<ArticleTag> Tags { get; set; }
     }
 }

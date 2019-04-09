@@ -7,21 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CLAD.Models
 {
     
-    [Area ("Admin")]
-   
+    [Area ("Admin")]   
     [Authorize(Roles = "Admin")]
 
     public class ArticlesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> userManager;
 
-        public ArticlesController(ApplicationDbContext context)
+        public ArticlesController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Articles
@@ -63,7 +65,9 @@ namespace CLAD.Models
         {
             if (ModelState.IsValid)
             {
-                article.Author = User.Identity.Name;
+                var userId = userManager.GetUserId(User);
+
+                article.AuthorId = userId;
                 article.PublicationDate = DateTime.Now;
                 _context.Add(article);
                 await _context.SaveChangesAsync();

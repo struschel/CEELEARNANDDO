@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using CLAD.Models;
+using CLAD.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CLAD.Controllers
 {
     public class ArticlesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ArticlesController(ApplicationDbContext context)
+        public ArticlesController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Articles
@@ -34,6 +39,10 @@ namespace CLAD.Controllers
             }
 
             var article = await _context.Articles
+                .Include(a => a.Author)
+                .Include(a => a.Tags)
+                .Include(a => a.Comments)
+                .ThenInclude(c => c.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -41,6 +50,66 @@ namespace CLAD.Controllers
             }
 
             return View(article);
+        }
+
+        // GET: Articles/Details/5
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Details(int id, PostCommentModel model)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var article = await _context.Articles
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var comment = new ArticleComment();
+
+                comment.Content = model.Message;
+                comment.Author = await _userManager.GetUserAsync(User);
+                comment.PublicationDate = DateTime.Now;
+
+                // Instead of:
+                //   article.Comments.Add(comment);
+                // do:
+                //   comment.Article = article;
+                comment.Article = article;
+
+                _context.Add(comment);
+
+                await _context.SaveChangesAsync();
+
+                ModelState.Clear();
+            }
+
+            return View(article);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteComment(int id, int commentId)
+        {
+            var article = await _context.Articles.FindAsync(id);
+            if (article == null) return NotFound();
+
+            var comment = article.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null) return NotFound();
+
+            article.Comments.Remove(comment);
+            _context.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }

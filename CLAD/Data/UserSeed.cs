@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CLAD.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace CLAD.Data
 {
     public class UserSeed
     {
-        public static void SeedData(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static void SeedData(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
 
         }
 
-        public static void SeedUsers(UserManager<IdentityUser> userManager)
+        public static void SeedUsers(UserManager<User> userManager)
         {
 
             if (userManager.FindByNameAsync("user1@test.nl").Result == null)
             {
 
-                IdentityUser user = new IdentityUser
+                User user = new User
                 {
                     UserName = "user1@test.nl",
                     Email = "user1@test.nl"
@@ -36,7 +37,7 @@ namespace CLAD.Data
 
             if (userManager.FindByNameAsync("user2@test.nl").Result == null)
             {
-                IdentityUser user = new IdentityUser
+                User user = new User
                 {
                     UserName = "user2@test.nl",
                     Email = "user2@test.nl",
@@ -52,7 +53,7 @@ namespace CLAD.Data
 
             if (userManager.FindByNameAsync("user3").Result == null)
             {
-                IdentityUser user = new IdentityUser
+                User user = new User
                 {
                     UserName = "user3@test.nl",
                     Email = "user3@test.nl",
@@ -66,7 +67,7 @@ namespace CLAD.Data
 
             if (userManager.FindByNameAsync("user4").Result == null)
             {
-                IdentityUser user = new IdentityUser
+                User user = new User
                 {
                     UserName = "user4@test.nl",
                     Email = "user4@test.nl",

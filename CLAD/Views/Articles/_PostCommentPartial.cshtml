@@ -1,0 +1,39 @@
+﻿@model PostCommentModel
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Post Content -->
+    <!-- Comments Form -->
+    <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <textarea asp-for="Message" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Message"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card my-4 overlay-wrapper">
+        <div class="overlay-reaction">
+            <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Aanmelden</a>
+            <a class="btn btn-default" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </div>
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" disabled="disabled">Je moet ingelogd zijn om een reactie te plaatsen</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" disabled="disabled">Submit</button>
+            </form>
+        </div>
+    </div>
+}
