@@ -15,10 +15,10 @@ namespace CLAD.Models
     [Area("Admin")]
     public class ConsultantsController : Controller
     {
-        UserManager<IdentityUser> _userManager;
+        UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
 
-        public ConsultantsController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ConsultantsController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;

@@ -15,7 +15,7 @@ namespace CLAD.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -52,7 +52,7 @@ namespace CLAD.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ArticleId");
+                    b.Property<int>("ArticleId");
 
                     b.Property<string>("AuthorId");
 
@@ -292,7 +292,8 @@ namespace CLAD.Data.Migrations
                 {
                     b.HasOne("CLAD.Models.Article", "Article")
                         .WithMany("Comments")
-                        .HasForeignKey("ArticleId");
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CLAD.Models.User", "Author")
                         .WithMany()

@@ -19,12 +19,13 @@ namespace CLAD.Data
         public static void SeedUsers(UserManager<User> userManager)
         {
 
-            if (userManager.FindByNameAsync("YEEET").Result == null)
+            if (userManager.FindByEmailAsync("user1@test.nl").Result == null)
             {
 
                 User user = new User
                 {
                     UserName = "YEEET",
+                    DisplayName = "YEEET",
                     Email = "user1@test.nl"
                 };
                 IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
@@ -56,6 +57,7 @@ namespace CLAD.Data
                 User user = new User
                 {
                     UserName = "Henk",
+                    DisplayName = "Henk",
                     Email = "user3@test.nl",
                 };
                 IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
@@ -70,6 +72,7 @@ namespace CLAD.Data
                 User user = new User
                 {
                     UserName = "Piet",
+                    DisplayName = "Piet",
                     Email = "user4@test.nl",
                 };
                 IdentityResult result = userManager.CreateAsync(user, "Test123!").Result;
@@ -90,7 +93,7 @@ namespace CLAD.Data
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
 
-            if (!roleManager.RoleExistsAsync("Admin").Result)
+            if (!roleManager.RoleExistsAsync("Admiin").Result)
             {
                 IdentityRole role = new IdentityRole
                 {
