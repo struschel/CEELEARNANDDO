@@ -97,7 +97,7 @@ namespace CLAD.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Comments,IsVisible,PublicationDate")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Comments,IsVisible,PublicationDate,AuthorId")] Article article)
         {
             if (id != article.Id)
             {
@@ -108,7 +108,11 @@ namespace CLAD.Models
             {
                 try
                 {
-                    _context.Update(article);
+                    var DBArticle = _context.Articles.Find(id);
+                    DBArticle.Title = article.Title;
+                    DBArticle.Content = article.Content;
+                    DBArticle.IsVisible = article.IsVisible;
+                    _context.Update(DBArticle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -150,7 +154,11 @@ namespace CLAD.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            
             var article = await _context.Articles.FindAsync(id);
+
+            _context.RemoveRange(article.Comments);
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
