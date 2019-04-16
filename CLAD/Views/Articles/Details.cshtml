@@ -5,6 +5,10 @@
 }
 
 
+@if (User.Identity.IsAuthenticated && User.IsInRole("Consultant"))
+{
+    <a asp-action="Create">Create new</a>
+}
 
 <div class="row">
     <!-- Post Content Column -->
@@ -22,7 +26,7 @@
         <p>@Html.Raw(Model.Content)</p>
 
         <partial name="_PostCommentPartial" model="@new PostCommentModel()" />
-        
+
         @foreach (var comment in Model.Comments.OrderByDescending(c => c.PublicationDate))
         {
             <partial name="_ArticleCommentPartial" model="comment" />
