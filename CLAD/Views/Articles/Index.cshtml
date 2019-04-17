@@ -6,15 +6,21 @@
 
 <h4>Artikelen</h4>
 
+@if (User.Identity.IsAuthenticated && User.IsInRole("Consultant"))
+{
+    <a asp-action="Create">Create new</a>
+}
+
 <ul>
-    @foreach (var item in Model) {
-    <li>
-        <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
-        <p>@Html.Raw(item.Content.TruncateHtml(20,"..."))</p>
-        <a asp-action="Details" asp-route-id="@item.Id">Verder Lezen</a>
+    @foreach (var item in Model)
+    {
+        <li>
+            <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
+            <p>@Html.Raw(item.Content.TruncateHtml(20, "..."))</p>
+            <a asp-action="Details" asp-route-id="@item.Id">Verder Lezen</a>
 
 
-    </li>
+        </li>
     }
 </ul>
 
@@ -44,30 +50,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    
-        <tr>
-            <td>
-                @item.Author.GetDisplayName()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.Raw(item.Content.TruncateHtml(20, "..."))
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublicationDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @item.Author.GetDisplayName()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.Raw(item.Content.TruncateHtml(20, "..."))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublicationDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

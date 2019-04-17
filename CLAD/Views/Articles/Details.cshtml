@@ -5,6 +5,10 @@
 }
 
 
+@if (User.Identity.IsAuthenticated && User.IsInRole("Consultant"))
+{
+    <a asp-action="Create">Create new</a>
+}
 
 <div class="row">
     <!-- Post Content Column -->
@@ -12,9 +16,18 @@
         <!-- Title -->
         <h1 class="mt-4">@Html.DisplayFor(model => model.Title)</h1>
         <!-- Author -->
-        <p class="lead">
-            by @Model.Author.GetDisplayName()
-        </p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p class="lead">
+                by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.AuthorId">@Model.Author.GetDisplayName()</a>
+            </p>
+        }
+        else
+        {
+            <p class="lead">
+               by @Model.Author.GetDisplayName()
+            </p>
+        }
         <hr>
         <!-- Date/Time -->
         <p>Geplaatst op @Html.DisplayFor(model => model.PublicationDate)</p>
@@ -22,7 +35,7 @@
         <p>@Html.Raw(Model.Content)</p>
 
         <partial name="_PostCommentPartial" model="@new PostCommentModel()" />
-        
+
         @foreach (var comment in Model.Comments.OrderByDescending(c => c.PublicationDate))
         {
             <partial name="_ArticleCommentPartial" model="comment" />

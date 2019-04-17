@@ -95,6 +95,33 @@ namespace CLAD.Controllers
             return View(article);
         }
 
+        // GET: Articles/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Articles/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Consultant")]
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,Comments,IsVisible,PublicationDate")] Article article)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = _userManager.GetUserId(User);
+
+                article.AuthorId = userId;
+                article.PublicationDate = DateTime.Now;
+                _context.Add(article);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(article);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteComment(int id, int commentId)
