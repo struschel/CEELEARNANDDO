@@ -1,6 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var ArticleCount = ViewData["ArticleCount"];
+
 }
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -13,10 +19,10 @@
     <div class="col-md-3">
         <div class="info-box">
             <!-- Apply any bg-* class to to the icon to color it -->
-            <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+            <span class="info-box-icon bg-red"><i class="fa fa-user"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Gebruikers</span>
-                <span class="info-box-number"></span>
+                <span class="info-box-number">@UserManager.Users.Count()</span>
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -29,7 +35,7 @@
             <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Likes</span>
-                <span class="info-box-number">93,139</span>
+                <span class="info-box-number">100k toch</span>
             </div>
             <!-- /.info-box-content -->
         </div>

@@ -22,6 +22,8 @@ namespace CLAD.Controllers
         {
             _context = context;
             _userManager = userManager;
+
+            
         }
 
         // GET: Articles
