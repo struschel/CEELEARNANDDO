@@ -10,6 +10,7 @@ namespace CLAD.Models
     {
         public string DisplayName { get; set; }
 
+
         public string ProfileImageUrl { get; set; }
 
         public string GetProfileImageUrl()

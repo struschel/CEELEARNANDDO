@@ -3,7 +3,15 @@
 <div class="media mb-4">
     <img class="d-flex mr-3 rounded-circle" src="@Model.Author.GetProfileImageUrl()" alt="@Model.Author.GetDisplayName()" width="50" height="50">
     <div class="media-body">
-        <h5 class="mt-0"><a>@Model.Author.GetDisplayName()</a></h5>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h5 class="mt-0"><a asp-controller="Users" asp-action="Details" asp-route-id="@Model.Author.Id">@Model.Author.GetDisplayName()</a></h5>
+        }
+        else
+        {
+            <h5 class="mt-0">@Model.Author.GetDisplayName()</h5>
+        }
+
         @Html.DisplayFor(m => m.Content)
     </div>
     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
