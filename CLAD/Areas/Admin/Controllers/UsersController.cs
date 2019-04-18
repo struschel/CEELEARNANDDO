@@ -65,7 +65,66 @@ namespace CLAD.Models
             return View(user);
         }
 
+        // GET: Articles/Edit/5
+        public async Task<IActionResult> Edit(string Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
 
+            var user = await _userManager.FindByIdAsync(Id);
+
+           // List<SelectListItem> list = new List<SelectListItem>();
+
+           // foreach (var role in _roleManager.Roles)
+           // {
+           //     list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+           //     ViewBag.Roles = list;
+           // }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Articles/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string Id, [Bind("Id,DisplayName")] User user)
+        {
+            if (Id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var DBUser = await _userManager.FindByIdAsync(Id);
+                    DBUser.DisplayName = user.DisplayName;
+                    await _userManager.UpdateAsync(DBUser);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string Id)

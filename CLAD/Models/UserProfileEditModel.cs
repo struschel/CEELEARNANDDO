@@ -10,5 +10,6 @@ namespace CLAD.Models
     {
         public IFormFile AvatarImage { get; set; }
         public string DisplayName { get; set; }
+        public string RoleName { get; set; }
     }
 }
