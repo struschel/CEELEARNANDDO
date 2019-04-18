@@ -13,6 +13,20 @@
     <None Remove="Areas\NewFolder\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Articles\Details\css\site.css" />
+    <None Remove="Views\Articles\Details\css\small-business.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Articles\Details\css\site.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\Articles\Details\css\small-business.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

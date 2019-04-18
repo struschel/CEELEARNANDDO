@@ -5,7 +5,7 @@
 }
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
+@using CLAD.Models
 
 
 <div class="text-center">
@@ -32,10 +32,23 @@
     <div class="col-md-3">
         <div class="info-box">
             <!-- Apply any bg-* class to to the icon to color it -->
-            <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+            <span class="info-box-icon bg-red"><i class="fa fa-newspaper-o"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">100k toch</span>
+                <span class="info-box-text">Artikelen</span>
+                <span class="info-box-number">@ViewData["ArticleCount"].ToString()</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+
+    <div class="col-md-3">
+        <div class="info-box">
+            <!-- Apply any bg-* class to to the icon to color it -->
+            <span class="info-box-icon bg-red"><i class="fa fa-newspaper-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Consultants</span>
+                <span class="info-box-number">@ViewData["ConsultantCount"].ToString()</span>
             </div>
             <!-- /.info-box-content -->
         </div>
