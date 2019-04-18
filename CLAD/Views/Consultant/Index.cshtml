@@ -1,0 +1,26 @@
+﻿@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@model IEnumerable<CLAD.Models.ConsultantViewModel>
+
+
+@{
+    ViewData["Title"] = "Consultants";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+
+            <div class="col-sm-4">
+                <img src="@item.User.ProfileImageUrl" style="border-radius: 50%;" />
+                <br />
+                <span style="text-align: center;">@item.User.DisplayName</span>
+                @foreach(var article in item.Articles)
+                {
+                    @article.Title<br/>
+                }
+            </div>
+        }
+    </div>
+</div>
