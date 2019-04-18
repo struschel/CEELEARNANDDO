@@ -31,7 +31,7 @@ namespace CLAD.Controllers
             {
                 ConsultantViewModel cvm = new ConsultantViewModel();
                 cvm.User = c;
-                cvm.Articles = _context.Articles.Where(a => a.AuthorId == c.Id).ToList();
+                cvm.Articles = _context.Articles.Where(a => a.AuthorId == c.Id && a.IsVisible == true).ToList();
 
                 list.Add(cvm);
 

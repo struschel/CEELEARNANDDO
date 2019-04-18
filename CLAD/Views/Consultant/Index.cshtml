@@ -13,12 +13,13 @@
         {
 
             <div class="col-sm-4">
-                <img src="@item.User.ProfileImageUrl" style="border-radius: 50%;" />
+                <img class="mx-auto d-block" src="@item.User.ProfileImageUrl" style="border-radius: 50%; width: 150px; height: 150px;" />
                 <br />
-                <span style="text-align: center;">@item.User.DisplayName</span>
+                <h2><span style="text-align: center;">@item.User.UserName</span></h2>
+                <br />
                 @foreach(var article in item.Articles)
                 {
-                    @article.Title<br/>
+                <a asp-controller="Articles" asp-action="Details" asp-route-id="@article.Id">@article.Title</a><br/>
                 }
             </div>
         }
