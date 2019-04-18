@@ -1,21 +1,20 @@
-﻿@inject UserManager<User> _userManager;
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="h-100">
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>@ViewData["Title"] - CLAD</title>
+  <title>@ViewData["Title"] - CLAD</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="~/css/small-business.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="~/css/small-business.css" rel="stylesheet">
 
 </head>
 
@@ -45,22 +44,6 @@
     </nav>
     <!-- Page Content -->
     <div class="container flex-grow-1 my-3">
-        <!-- Heading Row -->
-        <div class="row align-items-center my-5">
-            <div class="col-lg-7">
-                <img class="img-fluid rounded mb-4 mb-lg-0" src="~/static/AfbeeldingA.jpg" alt="">
-            </div>
-            <!-- /.col-lg-8 -->
-            <div class="col-lg-5">
-                <div class="text-center">
-                    <h1 class="display-4">Welcome</h1>
-                    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">test</a>.</p>
-                </div>
-                <a class="btn btn-primary" href="#">Call to Action!</a>
-            </div>
-            <!-- /.col-md-4 -->
-        </div>
-        <!-- /.row -->
         @RenderBody()
     </div>
     <!-- /.container -->
