@@ -35,5 +35,14 @@ namespace CLAD.Models
         public DateTime PublicationDate { get; set; }
 
         public virtual IList<ArticleTag> Tags { get; set; }
+        
+
+        public string GetTagsAsString()
+        {
+            if (Tags == null || !Tags.Any())
+                return "";
+
+            return string.Join(", ", Tags.Select(t => t.Tag.Name));
+        }
     }
 }

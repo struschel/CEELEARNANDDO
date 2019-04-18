@@ -1,0 +1,12 @@
+﻿@model Answer
+
+<div>
+    <form asp-action="AddAnswer" asp-route-id="@Model.QuestionId" method="post">
+
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <textarea asp-for="Content" class="editor" rows="10" cols="80"></textarea>
+
+        <button type="submit" class="btn btn-primary">Vesturen</button>
+    </form>
+</div>

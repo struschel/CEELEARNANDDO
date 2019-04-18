@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace CLAD.Models
 {
-    public class UserProfileEditModel
+    public class UserEditModel
     {
-        public IFormFile AvatarImage { get; set; }
+        public string Id { get; set; }
+
+        public string UserName { get; set; }
+
         public string DisplayName { get; set; }
+
         public string RoleName { get; set; }
+
+        public string Email { get; set; }
+
+        public string Description { get; set; }
+
     }
 }

@@ -62,46 +62,46 @@ namespace CLAD.Controllers
         public async Task<IActionResult> Edit()
         {
             var user = await _userManager.GetUserAsync(User);
-            var model = new UserProfileEditModel();
+            var model = new UserEditModel();
             model.DisplayName = user.DisplayName;
 
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(UserProfileEditModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.GetUserAsync(User);
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(UserEditModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = await _userManager.GetUserAsync(User);
 
-                if (model.AvatarImage != null && model.AvatarImage.Length > 0)
-                {
+        //        if (model.AvatarImage != null && model.AvatarImage.Length > 0)
+        //        {
 
-                    // full path to file in temp location
-                    var fileExtension = Path.GetExtension(model.AvatarImage.FileName);
-                    var relativeUrl = "AvatarImages/" + User.Identity.Name + "." + fileExtension;
-                    var filePath = Url.Content("wwwroot/" + relativeUrl);
+        //            // full path to file in temp location
+        //            var fileExtension = Path.GetExtension(model.AvatarImage.FileName);
+        //            var relativeUrl = "AvatarImages/" + User.Identity.Name + "." + fileExtension;
+        //            var filePath = Url.Content("wwwroot/" + relativeUrl);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await model.AvatarImage.CopyToAsync(stream);
-                    }
-                    user.ProfileImageUrl = "/" + relativeUrl;
-                }
+        //            using (var stream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                await model.AvatarImage.CopyToAsync(stream);
+        //            }
+        //            user.ProfileImageUrl = "/" + relativeUrl;
+        //        }
 
-                user.DisplayName = model.DisplayName;
+        //        user.DisplayName = model.DisplayName;
 
-                _context.Update(user);
-                await _context.SaveChangesAsync();
-            }
+        //        _context.Update(user);
+        //        await _context.SaveChangesAsync();
+        //    }
 
-            // process uploaded files
-            // Don't rely on or trust the FileName property without validation.
+        //    // process uploaded files
+        //    // Don't rely on or trust the FileName property without validation.
 
 
 
-            return View();
-        }
+        //    return View();
+        //}
     }
 }

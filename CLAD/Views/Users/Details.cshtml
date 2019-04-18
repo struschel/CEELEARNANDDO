@@ -1,12 +1,27 @@
 ﻿@model User
-
+@inject UserManager<User> _userManager
 @{
     ViewData["Title"] = "Details";
+    var isConsultant = await _userManager.IsInRoleAsync(Model, "Consultant");
+    var isAdmin = await _userManager.IsInRoleAsync(Model, "Admin");
+}
+<h1>
+    @Model.GetDisplayName()
+</h1>
+
+@if (isConsultant)
+{
+    <h3><span class="badge badge-info">Consultant</span></h3>
+}
+@if (isAdmin)
+{
+    <h3><span class="badge badge-danger">Admin</span></h3>
 }
 
+<br />
 
 <div>
-    <h4>User</h4>
+
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -29,3 +44,16 @@
         </dd>
     </dl>
 </div>
+
+
+@if (isConsultant || isAdmin)
+{
+    <hr />
+    <br />
+<div class="row">
+    @foreach (var article in Model.Articles.OrderByDescending(a => a.PublicationDate))
+    {
+        <partial name="_ArticleCardPartial" model="article" />
+    }
+</div>
+}

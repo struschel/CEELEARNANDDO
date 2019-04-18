@@ -1,0 +1,89 @@
+﻿@model CLAD.Models.Question
+@inject UserManager<User> _userManager
+@{
+    ViewData["Title"] = "Details";
+    var user = await _userManager.GetUserAsync(User);
+}
+
+<h2>Details</h2>
+
+<div class="row">
+    <!-- Post Content Column -->
+    <div class="col-lg-8">
+        <!-- Title -->
+        <h1 class="mt-4">@Html.DisplayFor(model => model.Title)</h1>
+        <!-- Author -->
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p class="lead">
+                by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.Author.Id">@Model.Author.GetDisplayName()</a>
+            </p>
+        }
+        else
+        {
+            <p class="lead">
+                by @Model.Author.GetDisplayName()
+            </p>
+        }
+        <hr>
+        <!-- Date/Time -->
+        <p>Geplaatst op @Html.DisplayFor(model => model.PublicationDate)</p>
+
+        <p>@Html.Raw(Model.Content)</p>
+
+        @foreach (var answer in Model.Answers)
+        {
+            <partial name="~/Views/Questions/_AnswerPartial.cshtml" model="answer" />
+        }
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+        <!-- Categories Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Tags</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <li class="col-lg-6">
+                                    <a asp-controller="Questions" asp-action="Tag" asp-route-id="@tag.TagId">@tag.Tag.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+@*<div>
+        <h4>Article</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Comments)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Comments)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.PublicationDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.PublicationDate)
+            </dd>
+        </dl>
+    </div>*@
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

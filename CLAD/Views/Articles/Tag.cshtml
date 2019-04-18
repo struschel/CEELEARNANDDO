@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CLAD.Models.Article>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Artikelen met tag @ViewBag.Tag.Name</h4>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Consultant"))
+{
+    <a asp-action="Create">Create new</a>
+}
+
+<ul class="row">
+    @foreach (var item in Model)
+    {
+        <li class="col-md-4 mb-5 list-unstyled">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h2>
+                    <p>
+                        <div class="font-weight-bold float-left mr-3">Author: </div><div>@item.Author.GetDisplayName()</div>
+                    </p>
+                    <p class="card-text">@Html.Raw(item.Content.TruncateHtml(150, "..."))</p>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Verder Lezen</a>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

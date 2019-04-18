@@ -8,6 +8,7 @@ namespace CLAD.Models
 {
     public class Consultant
     {
+        public User User { get; set; }
         [Display(Name = "Omschrijving")]
         public string Description { get; set; }
 

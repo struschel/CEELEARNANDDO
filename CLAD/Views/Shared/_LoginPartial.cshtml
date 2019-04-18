@@ -6,13 +6,13 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profiel</a>
         </li>
 
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin"><b style="color: white;">AdminPaneel</b></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index"><b style="color: white;">AdminPaneel</b></a>
             </li>
         }
 

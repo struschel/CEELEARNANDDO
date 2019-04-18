@@ -21,15 +21,16 @@ namespace CLAD.Models
         private readonly ApplicationDbContext _context;
         UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
+
         
 
 
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             
             _userManager = userManager;
             _roleManager = roleManager;
-
+            _context = context;
           
         }
 
@@ -74,20 +75,30 @@ namespace CLAD.Models
             }
 
             var user = await _userManager.FindByIdAsync(Id);
-
-           // List<SelectListItem> list = new List<SelectListItem>();
-
-           // foreach (var role in _roleManager.Roles)
-           // {
-           //     list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
-           //     ViewBag.Roles = list;
-           // }
-
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+
+            var model = new UserEditModel();
+            model.Id = user.Id;
+            model.UserName = user.UserName;
+            model.DisplayName = user.DisplayName;
+            model.Email = user.Email;
+            model.Description = user.Description;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var userRole = roles.FirstOrDefault();
+            model.RoleName = userRole;
+
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (var role in _roleManager.Roles)
+            {
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name, Selected = (userRole == role.Name) });
+                ViewBag.Roles = list;
+            }
+            return View(model);
         }
 
         // POST: Articles/Edit/5
@@ -95,7 +106,7 @@ namespace CLAD.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string Id, [Bind("Id,DisplayName")] User user)
+        public async Task<IActionResult> Edit(string Id, UserEditModel user)
         {
             if (Id != user.Id)
             {
@@ -108,7 +119,21 @@ namespace CLAD.Models
                 {
                     var DBUser = await _userManager.FindByIdAsync(Id);
                     DBUser.DisplayName = user.DisplayName;
+                    DBUser.UserName = user.UserName;
+                    DBUser.Email = user.Email;
+                    DBUser.Description = user.Description;
+
+                    var roles = await _userManager.GetRolesAsync(DBUser);
+                    var userRole = roles.FirstOrDefault();
+
+                    if(userRole != user.RoleName)
+                    {
+                        await _userManager.RemoveFromRolesAsync(DBUser, roles);
+                        await _userManager.AddToRoleAsync(DBUser, user.RoleName);
+                    }
+
                     await _userManager.UpdateAsync(DBUser);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -13,8 +13,20 @@ namespace CLAD.Data
             : base(options)
         {
         }
+        public DbSet<CLAD.Models.Question> Questions { get; set; }
         public DbSet<CLAD.Models.Article> Articles { get; set; }
         public DbSet<CLAD.Models.User> User { get; set; }
         public DbSet<CLAD.Models.Mail> Mail { get; set; }
+        public DbSet<CLAD.Models.Tag> Tags { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<QuestionTag>(b =>
+            {
+                b.HasKey(questionTag => new { questionTag.QuestionId, questionTag.TagId });
+            });
+        }
     }
 }

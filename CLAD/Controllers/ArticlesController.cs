@@ -29,9 +29,25 @@ namespace CLAD.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Articles.Where(article => article.IsVisible).ToListAsync());
+            return View(await _context.Articles.Where(article => article.IsVisible).OrderByDescending(article => article.PublicationDate).ToListAsync());
         }
 
+        // GET: Articles
+        public async Task<IActionResult> Tag(int id)
+        {
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null) return NotFound();
+
+            ViewBag.Tag = tag;
+
+            return View(await _context.Articles
+                                      .Where(article => article.IsVisible)
+                                      .Where(article => article.Tags
+                                                               .Any(articleTag => articleTag.TagId == id))
+                                      .OrderByDescending(article => article.PublicationDate)
+                                      .ToListAsync());
+        }
+        
         // GET: Articles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -109,19 +125,54 @@ namespace CLAD.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Consultant")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,Comments,IsVisible,PublicationDate")] Article article)
+        public async Task<IActionResult> Create(ArticleCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var userId = _userManager.GetUserId(User);
 
+                var article = new Article();
+
+                article.Title = model.Title;
+                article.Content = model.Content;
+                article.Tags = new List<ArticleTag>();
+
+                // Add tags
+                if (!string.IsNullOrEmpty(model.Tags))
+                {
+                    var tags = model.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                    if(tags.Any())
+                    {
+                        foreach(var tag in tags)
+                        {
+                            var dbTag = _context.Tags.FirstOrDefault(t => t.Name.ToLower() == tag.ToLower());
+                            if(dbTag == null)
+                            {
+                                // Tag does not exist, create it
+                                dbTag = new Tag();
+                                dbTag.Name = tag;
+                                _context.Tags.Add(dbTag);
+                            }
+
+                            var articleTag = new ArticleTag();
+                            articleTag.Article = article;
+                            articleTag.Tag = dbTag;
+
+                            article.Tags.Add(articleTag);
+                        }
+                    }
+                }
+
                 article.AuthorId = userId;
                 article.PublicationDate = DateTime.Now;
+
+
                 _context.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(article);
+            return View(model);
         }
 
         [HttpPost]

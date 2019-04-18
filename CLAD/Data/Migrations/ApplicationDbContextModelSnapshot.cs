@@ -19,6 +19,31 @@ namespace CLAD.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CLAD.Models.Answer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("PublicationDate");
+
+                    b.Property<int>("QuestionId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answer");
+                });
+
             modelBuilder.Entity("CLAD.Models.Article", b =>
                 {
                     b.Property<int>("Id")
@@ -83,6 +108,8 @@ namespace CLAD.Data.Migrations
 
                     b.HasIndex("ArticleId");
 
+                    b.HasIndex("TagId");
+
                     b.ToTable("ArticleTag");
                 });
 
@@ -112,6 +139,55 @@ namespace CLAD.Data.Migrations
                     b.ToTable("Mail");
                 });
 
+            modelBuilder.Entity("CLAD.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<bool>("IsVisible");
+
+                    b.Property<DateTime>("PublicationDate");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("CLAD.Models.QuestionTag", b =>
+                {
+                    b.Property<int>("QuestionId");
+
+                    b.Property<int>("TagId");
+
+                    b.HasKey("QuestionId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("QuestionTag");
+                });
+
+            modelBuilder.Entity("CLAD.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("CLAD.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -121,6 +197,8 @@ namespace CLAD.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<string>("Description");
 
                     b.Property<string>("DisplayName");
 
@@ -281,10 +359,22 @@ namespace CLAD.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CLAD.Models.Article", b =>
+            modelBuilder.Entity("CLAD.Models.Answer", b =>
                 {
                     b.HasOne("CLAD.Models.User", "Author")
                         .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("CLAD.Models.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CLAD.Models.Article", b =>
+                {
+                    b.HasOne("CLAD.Models.User", "Author")
+                        .WithMany("Articles")
                         .HasForeignKey("AuthorId");
                 });
 
@@ -305,6 +395,31 @@ namespace CLAD.Data.Migrations
                     b.HasOne("CLAD.Models.Article", "Article")
                         .WithMany("Tags")
                         .HasForeignKey("ArticleId");
+
+                    b.HasOne("CLAD.Models.Tag", "Tag")
+                        .WithMany("Articles")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CLAD.Models.Question", b =>
+                {
+                    b.HasOne("CLAD.Models.User", "Author")
+                        .WithMany("Questions")
+                        .HasForeignKey("AuthorId");
+                });
+
+            modelBuilder.Entity("CLAD.Models.QuestionTag", b =>
+                {
+                    b.HasOne("CLAD.Models.Question", "Question")
+                        .WithMany("Tags")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CLAD.Models.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

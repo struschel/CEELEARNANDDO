@@ -1,7 +1,9 @@
 ﻿<ul class="sidebar-menu" data-widget="tree">
-    <li class="header">HEADER</li>
+    <li class="header">MENU</li>
     <!-- Optionally, you can add icons to the links -->
-    <li><a href="/admin/users"><i class="fa fa-users" aria-hidden="true"></i> <span>Gebruikers</span></a></li>
-    <li><a href="/admin/consultants"><i class="fa fa-user" aria-hidden="true"></i> <span>Consultants</span></a></li>
-    <li><a href="/admin/articles"><i class="fa fa-pencil-square" aria-hidden="true"></i> <span>Artikelen</span></a></li>
+    <li><a asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard" aria-hidden="true"></i> <span>Dashboard</span></a></li>
+    <li><a asp-area="Admin" asp-controller="Users" asp-action="Index"><i class="fa fa-users" aria-hidden="true"></i> <span>Gebruikers</span></a></li>
+    <li><a asp-area="Admin" asp-controller="Consultants" asp-action="Index"><i class="fa fa-user" aria-hidden="true"></i> <span>Consultants</span></a></li>
+    <li><a asp-area="Admin" asp-controller="Articles" asp-action="Index"><i class="fa fa-pencil-square" aria-hidden="true"></i> <span>Artikelen</span></a></li>
+    <li><a asp-area="Admin" asp-controller="Questions" asp-action="Index"><i class="fa fa-question" aria-hidden="true"></i> <span>Questions</span></a></li>
 </ul>

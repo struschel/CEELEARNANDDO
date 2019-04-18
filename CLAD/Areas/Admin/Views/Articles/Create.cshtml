@@ -1,4 +1,4 @@
-﻿@model CLAD.Models.Article
+﻿@model AdminArticleViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -24,19 +24,17 @@
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
 
-                <textarea asp-for="Content" id="editor1" rows="10" cols="80">
-                This is my textarea to be replaced with CKEditor.
-                </textarea>
-
-                <script>
-                    // Replace the <textarea id="editor1"> with a CKEditor
-                    // instance, using default configuration.
-                    CKEDITOR.replace('editor1');
-                </script>
+                <textarea asp-for="Content" class="editor" rows="10" cols="80"></textarea>
 
                 <span asp-validation-for="Content" class="text-danger"></span>
 
             </div>
+
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+            </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
