@@ -1,4 +1,4 @@
-﻿@inject  SignInManager<User> SignInManager
+﻿@inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 <!DOCTYPE html>
 <html>
@@ -64,11 +64,14 @@
                                 <!-- Menu-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a asp-area="Identity" asp-page="/Account/Manage" class="btn btn-default btn-flat">Profile</a>
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a asp-area="Identity" asp-page="/Account/Logout" class="btn btn-default btn-flat">Sign out</a>
+                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                            <button type="submit" class="btn btn-default btn-flat">Uitloggen</button>
+                                        </form>
                                     </div>
+
                                 </li>
                             </ul>
                         </li>
@@ -112,11 +115,11 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            @if(((bool?)ViewData["NoBox"]) == true)
+            @if (((bool?)ViewData["NoBox"]) == true)
             {
-            <section>
-                @RenderBody()
-            </section>
+                <section>
+                    @RenderBody()
+                </section>
             }
             else
             {
