@@ -4,13 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h4>Artikelen</h4>
+<h2>Artikelen</h2>
+<hr />
 
 @if (User.Identity.IsAuthenticated && (User.IsInRole("Consultant") || User.IsInRole("Admin")))
 {
     <a asp-action="Create" class="btn btn-primary">Create new</a>
 }
-
+<hr />
 <ul class="row">
     @foreach (var item in Model)
     {
