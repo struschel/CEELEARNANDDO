@@ -1,12 +1,16 @@
 ﻿@model Answer
 
-<div>
-    <form asp-action="AddAnswer" asp-route-id="@Model.QuestionId" method="post">
 
-        <div asp-validation-summary="ModelOnly"></div>
-
-        <textarea asp-for="Content" class="editor" rows="10" cols="80"></textarea>
-
-        <button type="submit" class="btn btn-primary">Vesturen</button>
-    </form>
+<div class="card my-4">
+    <h5 class="card-header">Beantwoorden:</h5>
+    <div class="card-body">
+        <form asp-action="AddAnswer" asp-route-id="@Model.QuestionId" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <textarea asp-for="Content" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Content"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Beantwoorden</button>
+        </form>
+    </div>
 </div>
