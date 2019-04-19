@@ -1,5 +1,10 @@
 ﻿@model CLAD.Models.Article
 
+@{
+    string currentUrl = Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path;
+    string enc = System.Net.WebUtility.UrlEncode(currentUrl);
+}
+
 
 @{
     ViewData["Title"] = "Details";
@@ -27,7 +32,7 @@
         else
         {
             <p class="lead">
-               by @Model.Author.GetDisplayName()
+                by @Model.Author.GetDisplayName()
             </p>
         }
         <hr>
@@ -35,6 +40,16 @@
         <p>Geplaatst op @Html.DisplayFor(model => model.PublicationDate)</p>
 
         <p>@Html.Raw(Model.Content)</p>
+
+        <div class="fb-share-button" data-href="@currentUrl" data-layout="button" data-size="large">
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=@enc" class="fb-xfbml-parse-ignore">Delen</a>
+        </div>
+
+        <a class="twitter-share-button"
+           href="https://twitter.com/intent/tweet?url=@currentUrl"
+           data-size="large">
+            <i class="fab fa-twitter"></i>
+        </a>
 
         <partial name="_PostCommentPartial" model="@new PostCommentModel()" />
 
@@ -129,3 +144,5 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v3.2"></script>

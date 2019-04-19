@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace CLAD.Models
 {
@@ -39,6 +40,10 @@ namespace CLAD.Models
             {
                 return NotFound();
             }
+
+            var curURL = Request.GetDisplayUrl();
+
+            ViewData["cURL"] = curURL;
 
             var article = await _context.Articles
                 .FirstOrDefaultAsync(m => m.Id == id);
