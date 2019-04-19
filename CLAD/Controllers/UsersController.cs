@@ -15,7 +15,6 @@ using System.IO;
 namespace CLAD.Controllers
 {
 
-    [Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
