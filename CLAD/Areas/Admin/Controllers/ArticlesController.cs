@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CLAD.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http.Extensions;
+using CLAD.Areas.Admin.Models;
 
 namespace CLAD.Models
 {
@@ -41,10 +41,6 @@ namespace CLAD.Models
                 return NotFound();
             }
 
-            var curURL = Request.GetDisplayUrl();
-
-            ViewData["cURL"] = curURL;
-
             var article = await _context.Articles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
@@ -58,7 +54,7 @@ namespace CLAD.Models
         // GET: Articles/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new AdminArticleViewModel());
         }
 
         // POST: Articles/Create
@@ -66,19 +62,55 @@ namespace CLAD.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,Comments,IsVisible,PublicationDate")] Article article)
+        public async Task<IActionResult> Create(AdminArticleViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var userId = userManager.GetUserId(User);
 
+                var article = new Article();
+
+                article.Title = model.Title;
+                article.Content = model.Content;
+                article.IsVisible = model.IsVisible;
+                
                 article.AuthorId = userId;
                 article.PublicationDate = DateTime.Now;
+                article.Tags = new List<ArticleTag>();
+
+
+                // Add tags
+                if (!string.IsNullOrEmpty(model.Tags))
+                {
+                    var tags = model.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                    if (tags.Any())
+                    {
+                        foreach (var tag in tags)
+                        {
+                            var dbTag = _context.Tags.FirstOrDefault(t => t.Name.ToLower() == tag.ToLower());
+                            if (dbTag == null)
+                            {
+                                // Tag does not exist, create it
+                                dbTag = new Tag();
+                                dbTag.Name = tag;
+                                _context.Tags.Add(dbTag);
+                            }
+
+                            var articleTag = new ArticleTag();
+                            articleTag.Article = article;
+                            articleTag.Tag = dbTag;
+
+                            article.Tags.Add(articleTag);
+                        }
+                    }
+                }
+
                 _context.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(article);
+            return View(model);
         }
 
         // GET: Articles/Edit/5
@@ -94,7 +126,16 @@ namespace CLAD.Models
             {
                 return NotFound();
             }
-            return View(article);
+
+            var model = new AdminArticleViewModel();
+
+            model.Id = article.Id;
+            model.Title = article.Title;
+            model.Content = article.Content;
+            model.IsVisible = article.IsVisible;
+            model.Tags = string.Join(',', article.Tags.Select(t => t.Tag.Name));
+
+            return View(model);
         }
 
         // POST: Articles/Edit/5
@@ -102,9 +143,9 @@ namespace CLAD.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Comments,IsVisible,PublicationDate,AuthorId")] Article article)
+        public async Task<IActionResult> Edit(int id, AdminArticleViewModel model)
         {
-            if (id != article.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -114,15 +155,47 @@ namespace CLAD.Models
                 try
                 {
                     var DBArticle = _context.Articles.Find(id);
-                    DBArticle.Title = article.Title;
-                    DBArticle.Content = article.Content;
-                    DBArticle.IsVisible = article.IsVisible;
+
+                    DBArticle.Title = model.Title;
+                    DBArticle.Content = model.Content;
+                    DBArticle.IsVisible = model.IsVisible;
+
+
+                    // Add tags
+                    DBArticle.Tags.Clear();
+
+                    if (!string.IsNullOrEmpty(model.Tags))
+                    {
+                        var tags = model.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                        
+                        if (tags.Any())
+                        {
+                            foreach (var tag in tags)
+                            {
+                                var dbTag = _context.Tags.FirstOrDefault(t => t.Name.ToLower() == tag.ToLower());
+                                if (dbTag == null)
+                                {
+                                    // Tag does not exist, create it
+                                    dbTag = new Tag();
+                                    dbTag.Name = tag;
+                                    _context.Tags.Add(dbTag);
+                                }
+
+                                var articleTag = new ArticleTag();
+                                articleTag.Article = DBArticle;
+                                articleTag.Tag = dbTag;
+
+                                DBArticle.Tags.Add(articleTag);
+                            }
+                        }
+                    }
+
                     _context.Update(DBArticle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArticleExists(article.Id))
+                    if (!ArticleExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -133,7 +206,7 @@ namespace CLAD.Models
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(article);
+            return View(model);
         }
 
         // GET: Articles/Delete/5
@@ -159,12 +232,13 @@ namespace CLAD.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            
             var article = await _context.Articles.FindAsync(id);
 
             _context.RemoveRange(article.Comments);
+            _context.RemoveRange(article.Tags);
+
             _context.Articles.Remove(article);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

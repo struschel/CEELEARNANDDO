@@ -1,0 +1,27 @@
+﻿@model Answer
+
+<!-- Single Comment -->
+<div class="media mb-4">
+    <img class="d-flex mr-3 rounded-circle" src="@Model.Author.GetProfileImageUrl()" alt="@Model.Author.GetDisplayName()" width="50" height="50">
+    <div class="media-body">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h5 class="mt-0"><a asp-controller="Users" asp-action="Details" asp-route-id="@Model.Author.Id">@Model.Author.GetDisplayName()</a></h5>
+        }
+        else
+        {
+            <h5 class="mt-0">@Model.Author.GetDisplayName()</h5>
+        }
+
+        @Html.DisplayFor(m => m.Content)
+    </div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <br />
+        <form method="post" asp-action="DeleteAnswer">
+            <input type="hidden" name="id" value="@Model.QuestionId" />
+            <input type="hidden" name="answerId" value="@Model.Id" />
+            <button class="btn btn-link">Delete</button>
+        </form>
+    }
+</div>

@@ -1,31 +1,49 @@
 ﻿@model User
-
+@inject UserManager<User> _userManager
 @{
     ViewData["Title"] = "Details";
+    var isConsultant = await _userManager.IsInRoleAsync(Model, "Consultant");
+    var isAdmin = await _userManager.IsInRoleAsync(Model, "Admin");
+}
+
+@if (isConsultant)
+{
+    <img src="@Model.GetProfileImageUrl()" style="border-radius: 50%; width: 200px; height: 200px;" />
+    <hr />
+    <h1>
+        @Model.GetDisplayName()
+    </h1>
+
+    <h3><span class="badge badge-info">Consultant</span></h3>
+    <br />
+
+    <dl class="row">
+        <dt class="col-sm-2">Description:</dt>
+        <dd class="col-sm-10">@Model.GetDescription()</dd>
+        <dt class="col-sm-2">Email:</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+    </dl>
+}
+@if (isAdmin)
+{
+    <h1>
+        @Model.GetDisplayName()
+    </h1>
+
+    <h3><span class="badge badge-danger">Admin</span></h3>
 }
 
 
-<div>
-    <h4>User</h4>
+
+@if (isConsultant || isAdmin)
+{
+
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            Rollen:
-        </dt>
-        <dd class="col-sm-10">
-            @ViewData["Role"]
-        </dd>
-    </dl>
-</div>
+    <br />
+    <div class="row">
+        @foreach (var article in Model.Articles.OrderByDescending(a => a.PublicationDate))
+        {
+            <partial name="_ArticleCardPartial" model="article" />
+        }
+    </div>
+}

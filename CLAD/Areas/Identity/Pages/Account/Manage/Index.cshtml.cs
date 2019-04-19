@@ -56,6 +56,8 @@ namespace CLAD.Areas.Identity.Pages.Account.Manage
 
             public IFormFile AvatarImage { get; set; }
 
+            public string Description { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -74,13 +76,15 @@ namespace CLAD.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-            ProfilePictureUrl = user.ProfileImageUrl;
+            ProfilePictureUrl = user.GetProfileImageUrl();
+
 
             Input = new InputModel
             {
                 Email = email,
                 PhoneNumber = phoneNumber,
-                DisplayName = user.DisplayName
+                DisplayName = user.DisplayName,
+                Description = user.Description
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -101,6 +105,8 @@ namespace CLAD.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            var hasChanged = false;
+
             if(Input.AvatarImage != null)
             {
                 if (Input.AvatarImage.Length > 0)
@@ -117,10 +123,9 @@ namespace CLAD.Areas.Identity.Pages.Account.Manage
                     }
 
                     user.ProfileImageUrl = "/" + relativeUrl;
-                    ProfilePictureUrl = user.ProfileImageUrl;
+                    ProfilePictureUrl = user.GetProfileImageUrl();
 
-                    _dbContext.Update(user);
-                    await _dbContext.SaveChangesAsync();
+                    hasChanged = true;
                 }
             }
 
@@ -128,8 +133,17 @@ namespace CLAD.Areas.Identity.Pages.Account.Manage
             if(Input.DisplayName != displayName)
             {
                 user.DisplayName = Input.DisplayName;
-                _dbContext.Update(user);
-                await _dbContext.SaveChangesAsync();
+                hasChanged = true;
+            }
+
+            if (await _userManager.IsInRoleAsync(user, "Consultant"))
+            {
+                var description = user.Description;
+                if (Input.Description != description)
+                {
+                    user.Description = Input.Description;
+                    hasChanged = true;
+                }
             }
 
             var email = await _userManager.GetEmailAsync(user);
@@ -152,6 +166,12 @@ namespace CLAD.Areas.Identity.Pages.Account.Manage
                     var userId = await _userManager.GetUserIdAsync(user);
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
+            }
+
+            if (hasChanged)
+            {
+                _dbContext.Update(user);
+                await _dbContext.SaveChangesAsync();
             }
 
             await _signInManager.RefreshSignInAsync(user);

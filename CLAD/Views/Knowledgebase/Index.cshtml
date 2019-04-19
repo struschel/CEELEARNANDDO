@@ -1,0 +1,55 @@
+﻿@model IEnumerable<CLAD.Models.Question>
+
+@{
+    ViewData["Title"] = "Kennisbank";
+}
+
+<h2>Kennisbank</h2>
+<hr />
+<p>
+    <a asp-controller="Questions" asp-action="Create" class="btn btn-primary">Stel een Vraag</a>
+    <a asp-controller="Questions" asp-action="Index" class="btn btn-secondary">Mijn Vragen</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tags)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicationDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.Raw(item.Content.TruncateHtml(20, "..."))
+            </td>
+            <td>
+                @foreach(var tag in item.Tags)
+                {
+                    <a asp-controller="Knowledgebase" asp-action="Tag" asp-route-id="@tag.TagId" class="badge badge-secondary">@tag.Tag.Name</a>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublicationDate)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -21,15 +21,16 @@ namespace CLAD.Models
         private readonly ApplicationDbContext _context;
         UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
+
         
 
 
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             
             _userManager = userManager;
             _roleManager = roleManager;
-
+            _context = context;
           
         }
 
@@ -65,7 +66,90 @@ namespace CLAD.Models
             return View(user);
         }
 
+        // GET: Articles/Edit/5
+        public async Task<IActionResult> Edit(string Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
 
+            var user = await _userManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UserEditModel();
+            model.Id = user.Id;
+            model.UserName = user.UserName;
+            model.DisplayName = user.DisplayName;
+            model.Email = user.Email;
+            model.Description = user.Description;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var userRole = roles.FirstOrDefault();
+            model.RoleName = userRole;
+
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (var role in _roleManager.Roles)
+            {
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name, Selected = (userRole == role.Name) });
+                ViewBag.Roles = list;
+            }
+            return View(model);
+        }
+
+        // POST: Articles/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string Id, UserEditModel user)
+        {
+            if (Id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var DBUser = await _userManager.FindByIdAsync(Id);
+                    DBUser.DisplayName = user.DisplayName;
+                    DBUser.UserName = user.UserName;
+                    DBUser.Email = user.Email;
+                    DBUser.Description = user.Description;
+
+                    var roles = await _userManager.GetRolesAsync(DBUser);
+                    var userRole = roles.FirstOrDefault();
+
+                    if(userRole != user.RoleName)
+                    {
+                        await _userManager.RemoveFromRolesAsync(DBUser, roles);
+                        await _userManager.AddToRoleAsync(DBUser, user.RoleName);
+                    }
+
+                    await _userManager.UpdateAsync(DBUser);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string Id)
