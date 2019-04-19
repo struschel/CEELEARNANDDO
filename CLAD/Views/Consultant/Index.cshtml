@@ -20,7 +20,7 @@
                 <br />
                 <a asp-controller="Users" asp-action="Details" asp-route-id="@item.User.Id"><h2><span style="text-align: center;">@item.User.UserName</span></h2></a>
                 <br />
-                <p>@item.User.GetDescription()</p>
+                <p>@item.User.GetDescription().TruncateHtml(200, "...")</p>
 
 
             </div>
